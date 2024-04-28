@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Input } from './Input';
+import { useUserContext } from '../context/';
 
 export function LoginModal({ handleOpen }) {
+  const { login } = useUserContext();
   const [userObj, setUserObj] = useState({ email: '', password: '' });
 
   const handleChange = ({ target }) => {
@@ -11,6 +13,16 @@ export function LoginModal({ handleOpen }) {
       ...prevValue,
       [name]: value
     }));
+  };
+
+  const handleClick = async () => {
+    const { email, password } = userObj;
+
+    if (email && password) {
+      login(email, password);
+    }
+
+    handleOpen('login', false);
   };
 
   return (
@@ -31,9 +43,7 @@ export function LoginModal({ handleOpen }) {
           <Input id="password" type="password" handleChange={handleChange} value={userObj.password}>
             Senha:
           </Input>
-          <button
-            className="border border-black w-fit self-center p-3 px-8"
-            onClick={() => handleOpen('login', false)}>
+          <button className="border border-black w-fit self-center p-3 px-8" onClick={handleClick}>
             LOGIN
           </button>
         </div>

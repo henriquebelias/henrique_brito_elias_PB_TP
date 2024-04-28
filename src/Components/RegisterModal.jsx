@@ -1,8 +1,12 @@
 import { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addUser, auth } from '../firebase';
 import { Input } from './Input';
+import { useUserContext } from '../context/';
 
 export function RegisterModal({ handleOpen }) {
-  const [userObj, setUserObj] = useState({ firstName: '', lastName: '', email: '', password: '' });
+  const { setUsername, fetchUsers } = useUserContext();
+  const [userObj, setUserObj] = useState({ username: '', email: '', password: '' });
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -11,6 +15,22 @@ export function RegisterModal({ handleOpen }) {
       ...prevValue,
       [name]: value
     }));
+  };
+
+  const handleClick = async () => {
+    const { username, email, password } = userObj;
+
+    if (email && password) {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      setUsername(username);
+
+      await addUser(userCredential.user.uid, username, userCredential.user.email);
+
+      handleOpen('register', false);
+    }
+
+    fetchUsers();
   };
 
   return (
@@ -25,11 +45,8 @@ export function RegisterModal({ handleOpen }) {
           </p>
         </div>
         <div className="flex flex-col gap-8">
-          <Input id="firstName" type="text" handleChange={handleChange} value={userObj.firstName}>
-            Nome:
-          </Input>
-          <Input id="lastName" type="text" handleChange={handleChange} value={userObj.lastName}>
-            Sobrenome:
+          <Input id="username" type="text" handleChange={handleChange} value={userObj.username}>
+            Nome usuário:
           </Input>
           <Input id="email" type="email" handleChange={handleChange} value={userObj.email}>
             Email:
@@ -38,8 +55,9 @@ export function RegisterModal({ handleOpen }) {
             Senha:
           </Input>
           <button
+            type="button"
             className="border border-black w-fit self-center p-3"
-            onClick={() => handleOpen('register', false)}>
+            onClick={handleClick}>
             REGISTRAR
           </button>
         </div>
