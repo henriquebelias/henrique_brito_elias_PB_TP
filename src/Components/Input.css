@@ -1,0 +1,8 @@
+/* Input */
+.input-label {
+  @apply flex flex-col gap-2 max-[459px]:text-sm;
+}
+
+.input-text {
+  @apply border border-black p-4 max-[459px]:p-2;
+}

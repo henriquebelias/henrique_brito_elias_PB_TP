@@ -1,0 +1,15 @@
+.post-card-container {
+  @apply flex flex-col gap-2 border border-black lg:col-span-2 p-3;
+}
+
+.post-card-like-container {
+  @apply flex gap-4;
+}
+
+.post-card-like {
+  @apply flex gap-2 items-center;
+}
+
+.link-detail-page {
+  @apply border py-2 px-8 block w-fit;
+}

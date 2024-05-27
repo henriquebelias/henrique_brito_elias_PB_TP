@@ -1,0 +1,17 @@
+/* ErrorPage */
+
+.error-page-container {
+  @apply flex flex-col m-8;
+}
+
+.error-page-title {
+  @apply text-3xl font-bold underline;
+}
+
+.error-page-subtitle {
+  @apply text-2xl my-8;
+}
+
+.error-page-return-link {
+  @apply text-2xl w-fit;
+}

@@ -1,0 +1,12 @@
+/* UserControl */
+.button-container {
+  @apply flex gap-2 justify-end mr-3 my-3;
+}
+
+.logout-container {
+  @apply flex items-center gap-2 border border-black py-2 px-4 cursor-pointer;
+}
+
+.red-text {
+  @apply text-red-500 font-bold;
+}

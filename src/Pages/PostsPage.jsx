@@ -1,9 +1,11 @@
+import React from 'react';
 import { PostsListPage } from '../components/PostsListPage';
 import { RankingContainer } from '../components/RankingContainer';
+import './PostsPage.css';
 
 export function PostsPage({ addedPost, setAddedPost }) {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-3 m-3 gap-3">
+    <section className="section-container">
       <PostsListPage addedPost={addedPost} setAddedPost={setAddedPost} />
       <RankingContainer />
     </section>

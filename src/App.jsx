@@ -1,3 +1,4 @@
+import React from 'react';
 import { UserProvider } from './context/UserContext';
 import { LandingPage } from './pages/LandingPage';
 

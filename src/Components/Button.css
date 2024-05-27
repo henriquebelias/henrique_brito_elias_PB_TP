@@ -1,0 +1,4 @@
+/* Button */
+.system-button {
+  @apply border border-black py-2 px-4 cursor-pointer;
+}

@@ -1,0 +1,11 @@
+.ranking-section {
+  @apply border border-black p-3;
+}
+
+.ranking-title {
+  @apply text-2xl;
+}
+
+.ranking-list {
+  @apply list-decimal px-6 py-3;
+}

@@ -1,0 +1,25 @@
+/* PostPage */
+
+.post-page-main-container {
+  @apply w-2/4 mx-auto my-8;
+}
+
+.post-page-container {
+  @apply flex flex-col gap-8;
+}
+
+.post-page-title {
+  @apply text-xl text-center my-8;
+}
+
+.likes-container {
+  @apply flex gap-2;
+}
+
+.like-text {
+  @apply flex gap-2 items-center;
+}
+
+.post-button {
+  @apply border py-2 px-8 block w-fit;
+}

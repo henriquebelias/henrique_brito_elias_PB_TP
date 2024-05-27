@@ -1,12 +1,14 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
+import './ErrorPage.css';
 
 export function ErrorPage() {
   return (
-    <div className="flex flex-col m-8">
-      <h1 className="text-3xl font-bold underline">Erro</h1>
-      <p className="text-2xl my-8">Página não encontrada!</p>
+    <div className="error-page-container">
+      <h1 className="error-page-title">Erro</h1>
+      <p className="error-page-subtitle">Página não encontrada!</p>
 
-      <Link to="/" className="text-2xl w-fit">
+      <Link to="/" className="error-page-return-link">
         VOLTAR
       </Link>
     </div>

@@ -1,8 +1,10 @@
+import React from 'react';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addUser, auth } from '../firebase';
 import { Input } from './Input';
 import { useUserContext } from '../context/';
+import './RegisterModal.css';
 
 export function RegisterModal({ handleOpen }) {
   const { setUsername, fetchUsers } = useUserContext();
@@ -34,17 +36,15 @@ export function RegisterModal({ handleOpen }) {
   };
 
   return (
-    <div className="h-screen w-screen bg-black bg-opacity-80 absolute top-0">
-      <div className="border border-black bg-white p-8 relative top-32 w-3/5 left-[22%] sm:w-2/3 sm:left-[20%] 2xl:w-2/4 2xl:left-[30%]">
-        <div className="flex place-content-between">
-          <h3 className="text-2xl my-4 max-[459px]:text-base">Registrar Usuário</h3>
-          <p
-            className="text-2xl my-4 cursor-pointer max-[459px]:text-base"
-            onClick={() => handleOpen('register', false)}>
+    <div className="register-modal-bg">
+      <div className="register-modal-container">
+        <div className="register-modal-header">
+          <h3 className="register-modal-title">Registrar Usuário</h3>
+          <p className="register-modal-close" onClick={() => handleOpen('register', false)}>
             X
           </p>
         </div>
-        <div className="flex flex-col gap-8">
+        <div className="register-modal-input-container">
           <Input id="username" type="text" handleChange={handleChange} value={userObj.username}>
             Nome usuário:
           </Input>
@@ -54,10 +54,7 @@ export function RegisterModal({ handleOpen }) {
           <Input id="password" type="password" handleChange={handleChange} value={userObj.password}>
             Senha:
           </Input>
-          <button
-            type="button"
-            className="border border-black w-fit self-center p-3"
-            onClick={handleClick}>
+          <button type="button" className="register-modal-button" onClick={handleClick}>
             REGISTRAR
           </button>
         </div>

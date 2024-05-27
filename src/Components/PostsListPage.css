@@ -1,0 +1,7 @@
+.posts-section {
+  @apply flex flex-col gap-3 border border-black lg:col-span-2 p-3;
+}
+
+.topic-list-title {
+  @apply text-2xl;
+}

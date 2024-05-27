@@ -77,3 +77,7 @@ export async function getPost(id) {
 
   return null;
 }
+
+export async function editPost(id, body) {
+  return await set(ref(db, 'posts/' + id), body);
+}

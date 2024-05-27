@@ -1,6 +1,8 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { PostsList } from './PostsList';
 import { getPosts } from '../firebase';
+import './PostsListPage.css';
 
 export function PostsListPage({ addedPost, setAddedPost }) {
   const [posts, setPosts] = useState([]);
@@ -33,8 +35,8 @@ export function PostsListPage({ addedPost, setAddedPost }) {
   }, [addedPost, setAddedPost]);
 
   return (
-    <section className="flex flex-col gap-3 border border-black lg:col-span-2 p-3">
-      <h2 className="text-2xl">Lista de Tópicos</h2>
+    <section className="posts-section">
+      <h2 className="topic-list-title">Lista de Tópicos</h2>
       <PostsList posts={posts} />
     </section>
   );

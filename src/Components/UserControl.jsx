@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { MdOutlineLogout } from 'react-icons/md';
 import { RegisterModal } from './RegisterModal';
@@ -5,6 +6,7 @@ import { LoginModal } from './LoginModal';
 import { Button } from './Button';
 import { useUserContext } from '../context/';
 import { AddTopicModal } from './AddTopicModal';
+import './UserControl.css';
 
 export function UserControl({ setAddedPost }) {
   const { username, logout, isAuth } = useUserContext();
@@ -22,7 +24,7 @@ export function UserControl({ setAddedPost }) {
 
   return (
     <>
-      <div className="flex gap-2 justify-end mr-3 my-3">
+      <div className="button-container">
         {!isAuth ? (
           <Button handleClick={handleOpenModal} modal="register">
             REGISTRAR
@@ -33,11 +35,9 @@ export function UserControl({ setAddedPost }) {
           </Button>
         )}
         {isAuth ? (
-          <p
-            className="flex items-center gap-2 border border-black py-2 px-4 cursor-pointer"
-            onClick={handleLogout}>
+          <p className="logout-container" onClick={handleLogout}>
             {username}
-            <MdOutlineLogout className="text-red-500 font-bold" />
+            <MdOutlineLogout className="red-text" />
           </p>
         ) : (
           <Button handleClick={handleOpenModal} modal="login">

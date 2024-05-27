@@ -1,0 +1,27 @@
+.login-modal-bg {
+  @apply h-screen w-screen bg-black bg-opacity-80 absolute top-0;
+}
+
+.login-modal-container {
+  @apply border border-black bg-white p-8 relative top-32 w-3/5 left-[22%] sm:w-2/3 sm:left-[20%] 2xl:w-2/4 2xl:left-[30%];
+}
+
+.login-modal-header {
+  @apply flex place-content-between;
+}
+
+.login-modal-title {
+  @apply text-2xl my-4 max-[459px]:text-base;
+}
+
+.login-modal-close-icon {
+  @apply text-2xl my-4 cursor-pointer max-[459px]:text-base;
+}
+
+.login-modal-input-container {
+  @apply flex flex-col gap-8;
+}
+
+.login-modal-button {
+  @apply border border-black w-fit self-center p-3 px-8;
+}

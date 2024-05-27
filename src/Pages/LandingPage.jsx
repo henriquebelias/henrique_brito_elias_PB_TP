@@ -1,16 +1,18 @@
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { UserControl } from '../components/UserControl';
 import { PostsPage } from './PostsPage';
 import { ErrorPage } from './ErrorPage';
 import { PostPage } from './PostPage';
 import { useState } from 'react';
+import './LandingPage.css';
 
 export function LandingPage() {
   const [addedPost, setAddedPost] = useState(false);
 
   return (
     <>
-      <h1 className="text-4xl font-bold underline text-center mt-4">Fórum</h1>
+      <h1 className="system-title">Fórum</h1>
       <UserControl setAddedPost={setAddedPost} />
       <main>
         <Routes>

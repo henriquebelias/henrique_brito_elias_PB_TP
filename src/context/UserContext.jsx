@@ -1,3 +1,4 @@
+import React from 'react';
 import { createContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, getUser, getUsers } from '../firebase';
