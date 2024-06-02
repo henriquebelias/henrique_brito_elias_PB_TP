@@ -2,11 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import { Input } from './Input';
 import { useUserContext } from '../context/';
-import { addPost } from '../firebase';
+import { addPost, updateUser } from '../firebase';
 import './AddTopicModal.css';
 
 export function AddTopicModal({ handleOpen, setAddedPost }) {
-  const { userId } = useUserContext();
+  const { userId, userData, setUserData, fetchUsers } = useUserContext();
   const [topicObj, setTopicObj] = useState({ title: '', description: '', keywords: '' });
 
   const handleChange = ({ target }) => {
@@ -34,8 +34,15 @@ export function AddTopicModal({ handleOpen, setAddedPost }) {
         dislikes: 0
       };
 
-      addPost(sentObject);
+      const newUserData = {
+        ...userData,
+        points: userData.points + 3
+      };
 
+      await addPost(sentObject);
+      await updateUser(userId, { points: userData.points + 3 });
+      fetchUsers();
+      setUserData(newUserData);
       setAddedPost(true);
     }
 

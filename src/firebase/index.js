@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { child, get, getDatabase, push, ref, set } from 'firebase/database';
+import { child, get, getDatabase, push, ref, set, update } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,7 +26,8 @@ export async function addUser(userId, username, email) {
   return await set(ref(db, 'users/' + userId), {
     username,
     email,
-    points: 0
+    points: 0,
+    likedPosts: {}
   });
 }
 
@@ -50,6 +51,14 @@ export async function getUser(id) {
   }
 
   return null;
+}
+
+export async function editUser(id, body) {
+  return await set(ref(db, 'users/' + id), body);
+}
+
+export async function updateUser(id, body) {
+  return await update(ref(db, 'users/' + id), body);
 }
 
 export async function addPost(body) {

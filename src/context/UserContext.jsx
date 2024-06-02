@@ -10,6 +10,7 @@ export function UserProvider({ children }) {
   const [username, setUsername] = useState(null);
   const [users, setUsers] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState({});
 
   const login = async (email, password) => {
     try {
@@ -20,6 +21,7 @@ export function UserProvider({ children }) {
 
         setUsername(user.username);
         setUserId(userCredential.user.uid);
+        setUserData(user);
       }
     } catch (error) {
       alert('Não foi possível realizar o login');
@@ -43,6 +45,11 @@ export function UserProvider({ children }) {
       });
 
       setUsers(userSorted);
+
+      const currentUser = usersArr.find((user) => user.username === username);
+
+      setUsername(currentUser.username);
+      setUserData(currentUser);
     }
   };
 
@@ -55,6 +62,7 @@ export function UserProvider({ children }) {
 
         if (userRes) {
           setUsername(userRes.username);
+          setUserData(userRes);
         }
 
         setIsAuth(!!user);
@@ -76,7 +84,9 @@ export function UserProvider({ children }) {
     setUsername,
     users,
     fetchUsers,
-    userId
+    userId,
+    userData,
+    setUserData
   };
 
   return <UserContext.Provider value={context}>{children}</UserContext.Provider>;

@@ -1,23 +1,30 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { editPost, getPost } from '../firebase';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { editPost, getPost, getUser, updateUser } from '../firebase';
 import { useUserContext } from '../context';
 import { FaRegThumbsDown, FaRegThumbsUp } from 'react-icons/fa';
+import { getUserLikedPost, saveLikedPost } from '../utils/handlePostLike';
 import './PostPage.css';
 
 export function PostPage() {
   const { id } = useParams();
-  const { userId } = useUserContext();
+  const { userId, userData, setUserData, users, isAuth, fetchUsers } = useUserContext();
   const [post, setPost] = useState({
     title: '',
     publicationDate: '',
     keywords: [],
     description: '',
     likes: 0,
+    dislikes: 0,
     comments: []
   });
   const [newComment, setNewComment] = useState('');
+  const [processingClick, setProcessingClick] = useState(false);
+  const [userLikedPost, setUserLikedPost] = useState(null);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -29,7 +36,44 @@ export function PostPage() {
     fetchPosts();
   }, [id]);
 
-  const handleAddComment = () => {
+  useEffect(() => {
+    setUserLikedPost(getUserLikedPost(post.id, userData));
+  }, [userId, post, userData]);
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate('/');
+    }
+  }, [navigate, isAuth]);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setNewComment(value);
+
+    const atIndex = value.lastIndexOf('@');
+
+    if (atIndex > -1) {
+      const query = value.slice(atIndex + 1);
+
+      const matchedUsers = users.filter((user) =>
+        user.username.toLowerCase().includes(query.toLowerCase())
+      );
+
+      setFilteredUsers(matchedUsers);
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSelectUser = (user) => {
+    const atIndex = newComment.lastIndexOf('@');
+    const newValue = newComment.slice(0, atIndex + 1) + user.username;
+    setNewComment(newValue);
+    setShowSuggestions(false);
+  };
+
+  const handleAddComment = async () => {
     if (newComment) {
       const postCopy = { ...post };
       postCopy.comments.push(newComment);
@@ -37,8 +81,50 @@ export function PostPage() {
       setPost(postCopy);
       setNewComment('');
 
-      editPost(id, postCopy);
+      await editPost(id, postCopy);
+      await updateUser(userId, { points: userData.points + 2 });
+      if (post.user !== userId) {
+        const postUser = await getUser(post.user);
+        await updateUser(post.user, { points: postUser.points + 2 });
+      }
+      await fetchUsers();
     }
+  };
+
+  const handleClick = async (isLike) => {
+    setProcessingClick(true);
+
+    const postCopy = { ...post };
+    let likes = postCopy.likes;
+    let dislikes = postCopy.dislikes;
+    let like = false;
+    let dislike = false;
+
+    if (isLike) {
+      like = userLikedPost ? !userLikedPost.like : true;
+
+      if (like) {
+        likes++;
+      } else {
+        likes--;
+      }
+    } else {
+      dislike = userLikedPost ? !userLikedPost.dislike : true;
+
+      if (dislike) {
+        dislikes++;
+      } else {
+        dislikes--;
+      }
+    }
+
+    postCopy.likes = likes;
+    postCopy.dislikes = dislikes;
+
+    await editPost(post.id, postCopy);
+    await saveLikedPost(userId, post.id, { like, dislike }, userData, setUserData);
+    setProcessingClick(false);
+    setPost(postCopy);
   };
 
   return (
@@ -55,14 +141,16 @@ export function PostPage() {
         <div className="likes-container">
           <p className="like-text">
             {post.likes}
-            <FaRegThumbsUp />
+            <button onClick={() => handleClick(true)} disabled={processingClick}>
+              <FaRegThumbsUp />
+            </button>
           </p>
-          {userId === post.user && (
-            <p className="like-text">
-              {post.dislikes}
+          <p className="like-text">
+            {userId === post.user && post.dislikes}
+            <button onClick={() => handleClick(false)} disabled={processingClick}>
               <FaRegThumbsDown />
-            </p>
-          )}
+            </button>
+          </p>
         </div>
         <Link to="/" className="post-button">
           Voltar
@@ -75,7 +163,18 @@ export function PostPage() {
             rows="6"
             className="border p-2"
             value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}></textarea>
+            onChange={handleChange}></textarea>
+
+          {showSuggestions && (
+            <ul className="suggestions">
+              {filteredUsers.map((user, index) => (
+                <li key={index} onClick={() => handleSelectUser(user)}>
+                  {user.username}
+                </li>
+              ))}
+            </ul>
+          )}
+
           <button type="button" className="post-button" onClick={handleAddComment}>
             Submeter
           </button>

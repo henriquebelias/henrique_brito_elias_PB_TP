@@ -17,7 +17,8 @@ export function PostsListPage({ addedPost, setAddedPost }) {
           if (firstValue > secondValue) return -1;
           if (firstValue < secondValue) return 1;
           return 0;
-        });
+        })
+        .slice(0, 10);
 
       setPosts(postsSorted);
     }
@@ -37,7 +38,7 @@ export function PostsListPage({ addedPost, setAddedPost }) {
   return (
     <section className="posts-section">
       <h2 className="topic-list-title">Lista de Tópicos</h2>
-      <PostsList posts={posts} />
+      <PostsList posts={posts} setAddedPost={setAddedPost} />
     </section>
   );
 }

@@ -3,3 +3,12 @@
 .section-container {
   @apply grid grid-cols-1 lg:grid-cols-3 m-3 gap-3;
 }
+
+.suggestions li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
+}
