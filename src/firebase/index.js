@@ -90,3 +90,7 @@ export async function getPost(id) {
 export async function editPost(id, body) {
   return await set(ref(db, 'posts/' + id), body);
 }
+
+export async function updatePost(id, body) {
+  return await update(ref(db, 'posts/' + id), body);
+}

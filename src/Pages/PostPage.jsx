@@ -1,9 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { editPost, getPost, getUser, updateUser } from '../firebase';
+import { editPost, getPost, getUser, updatePost, updateUser } from '../firebase';
 import { useUserContext } from '../context';
 import { FaRegThumbsDown, FaRegThumbsUp } from 'react-icons/fa';
+import { TbAlertTriangle } from 'react-icons/tb';
 import { getUserLikedPost, saveLikedPost } from '../utils/handlePostLike';
 import './PostPage.css';
 
@@ -26,13 +27,13 @@ export function PostPage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
 
+  const fetchPosts = async () => {
+    const resPost = await getPost(id);
+
+    setPost({ ...resPost, comments: resPost.comments || [] });
+  };
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const resPost = await getPost(id);
-
-      setPost({ ...resPost, comments: resPost.comments || [] });
-    };
-
     fetchPosts();
   }, [id]);
 
@@ -127,10 +128,21 @@ export function PostPage() {
     setPost(postCopy);
   };
 
+  const handleReport = async () => {
+    await updatePost(id, { wasReported: true });
+    await fetchPosts();
+  };
+
   return (
     <main className="post-page-main-container">
       <div className="post-page-container">
         <h2 className="post-page-title">{post.title}</h2>
+        <button className="report-button" onClick={handleReport} title="Reportar tópico">
+          <TbAlertTriangle size={32} />
+        </button>
+        {post.user === userId && post.wasReported && (
+          <p style={{ color: 'red' }}>O seu tópico foi reportado por algum usuário.</p>
+        )}
         <div>
           <p>Publicado em: {new Date(post.publicationDate).toLocaleDateString()}</p>
           <p>
