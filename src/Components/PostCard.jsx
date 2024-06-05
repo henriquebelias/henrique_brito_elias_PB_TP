@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
+import { FaRegThumbsUp, FaRegThumbsDown, FaRegCommentAlt } from 'react-icons/fa';
 import { useUserContext } from '../context/';
 import './PostCard.css';
 import { getUserLikedPost, saveLikedPost } from '../utils/handlePostLike';
@@ -73,6 +73,11 @@ export function PostCard({ post, setAddedPost }) {
           <button onClick={() => handleClick(false)} disabled={processingClick}>
             <FaRegThumbsDown />
           </button>
+        </p>
+
+        <p className="post-card-like">
+          {post.comments ? post.comments.length : 0}
+          <FaRegCommentAlt />
         </p>
       </div>
 
